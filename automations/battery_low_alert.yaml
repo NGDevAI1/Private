@@ -6,6 +6,9 @@ alias: "Nízká baterie Zigbee zařízení"
 description: "Monitoruje všechna Zigbee zařízení a upozorňuje na nízkou úroveň baterie (pod 15%)"
 
 trigger:
+  # Monitors all battery sensors ending with _battery
+  # This will include Zigbee and potentially other devices
+  # To filter to only Zigbee devices, you can add integration check in condition
   - platform: numeric_state
     entity_id: sensor.*_battery
     below: 15
@@ -21,6 +24,7 @@ action:
       device_id: "{{ trigger.entity_id }}"
       battery_level: "{{ trigger.to_state.state }}"
       device_name: "{{ trigger.to_state.attributes.friendly_name | default(trigger.to_state.entity_id) }}"
+      clean_tag: "{{ trigger.entity_id | regex_replace('sensor\\.|_battery', '') | regex_replace('[^a-zA-Z0-9_]', '_') }}"
   - service: notify.mobile_app_motorola_edge_50_pro
     data:
       title: "⚠️ Nízká baterie"
@@ -29,7 +33,7 @@ action:
         notification_icon: mdi:battery-alert
         color: red
         clickAction: /
-        tag: "battery_low_{{ device_id }}"
+        tag: "battery_low_{{ clean_tag }}"
   # Wait 30 minutes before allowing this automation instance to process another trigger
   # This provides per-device debouncing when combined with mode: parallel
   - delay:
