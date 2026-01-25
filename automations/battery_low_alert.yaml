@@ -1,0 +1,33 @@
+alias: "Zigbee Battery Low Alert"
+description: "Monitoruje baterii všech Zigbee zařízení a posílá notifikaci když klesne pod 15%"
+
+trigger:
+  - platform: state
+    entity_id: 
+      - sensor.*_battery_level
+      - sensor.*_battery
+    attribute: value
+
+condition:
+  - condition: numeric_state
+    entity_id: "{{ trigger.entity_id }}"
+    below: 15
+
+action:
+  - service: notify.mobile_app_motorola_edge_50_pro
+    data:
+      title: "⚠️ Nízká baterie"
+      message: >
+        Zařízení {{ state_attr(trigger.entity_id, 'friendly_name') or trigger.entity_id }}
+        má baterii na {{ states(trigger.entity_id) }}%
+      data:
+        notification_icon: "mdi:battery-alert"
+        color: "red"
+        clickAction: "/lovelace/0"
+
+  - delay:
+      minutes: 30
+
+id: "zigbee_battery_low_alert_001"
+mode: queued
+max: 20
