@@ -1,0 +1,39 @@
+---
+# Automation to monitor Zigbee device battery levels and send notifications
+# when battery drops below 15%
+
+alias: "Nízká baterie Zigbee zařízení"
+description: "Monitoruje všechna Zigbee zařízení a upozorňuje na nízkou úroveň baterie (pod 15%)"
+
+trigger:
+  - platform: numeric_state
+    entity_id: sensor.*_battery
+    below: 15
+
+condition:
+  - condition: template
+    value_template: >
+      {{ trigger.to_state.state not in ['unknown', 'unavailable', 'none'] and
+         trigger.to_state.state | float(-1) >= 0 }}
+
+action:
+  - variables:
+      device_id: "{{ trigger.entity_id }}"
+      battery_level: "{{ trigger.to_state.state }}"
+      device_name: "{{ trigger.to_state.attributes.friendly_name | default(trigger.to_state.entity_id) }}"
+  - service: notify.mobile_app_motorola_edge_50_pro
+    data:
+      title: "⚠️ Nízká baterie"
+      message: "Zařízení {{ device_name }} má nízkou baterii: {{ battery_level }}%"
+      data:
+        notification_icon: mdi:battery-alert
+        color: red
+        clickAction: /
+        tag: "battery_low_{{ device_id }}"
+  # Wait 30 minutes before allowing this automation instance to process another trigger
+  # This provides per-device debouncing when combined with mode: parallel
+  - delay:
+      minutes: 30
+
+mode: parallel
+max: 20
