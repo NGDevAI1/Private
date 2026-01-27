@@ -8,16 +8,27 @@ description: "Monitoruje všechna Zigbee zařízení a upozorňuje na nízkou ú
 trigger:
   # Monitors all battery sensors ending with _battery
   # This will include Zigbee and potentially other devices
-  # To filter to only Zigbee devices, you can add integration check in condition
   - platform: numeric_state
     entity_id: sensor.*_battery
     below: 15
 
 condition:
+  # Validate the battery state is a valid number
   - condition: template
     value_template: >
       {{ trigger.to_state.state not in ['unknown', 'unavailable', 'none'] and
          trigger.to_state.state | float(-1) >= 0 }}
+  # Filter to only Zigbee devices by checking device integration
+  - condition: template
+    value_template: >
+      {% set dev_id = device_id(trigger.entity_id) %}
+      {% if dev_id %}
+        {% set integrations = device_attr(dev_id, 'identifiers') | list %}
+        {{ integrations | selectattr('0', 'eq', 'zha') | list | count > 0 or
+           integrations | selectattr('0', 'eq', 'zigbee2mqtt') | list | count > 0 }}
+      {% else %}
+        false
+      {% endif %}
 
 action:
   - variables:
