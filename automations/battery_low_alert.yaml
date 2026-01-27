@@ -6,22 +6,31 @@ alias: "Nízká baterie Zigbee zařízení"
 description: "Monitoruje všechna Zigbee zařízení a upozorňuje na nízkou úroveň baterie (pod 15%)"
 
 trigger:
-  # Monitors all battery sensors ending with _battery
-  # Only Zigbee devices (ZHA and Zigbee2MQTT) will pass through the condition filter
-  - platform: numeric_state
-    entity_id: sensor.*_battery
-    below: 15
+  # Monitors state changes for all entities
+  # Filtering to battery sensors done in condition
+  - platform: event
+    event_type: state_changed
 
 condition:
-  # Validate the battery state is a valid number
+  # Check if entity is a battery sensor
   - condition: template
     value_template: >
-      {{ trigger.to_state.state not in ['unknown', 'unavailable', 'none'] and
-         trigger.to_state.state | float(-1) >= 0 }}
+      {{ trigger.event.data.entity_id is defined and
+         trigger.event.data.entity_id.startswith('sensor.') and
+         trigger.event.data.entity_id.endswith('_battery') }}
+  # Validate the new state is a valid number below 15%
+  - condition: template
+    value_template: >
+      {% set new_state = trigger.event.data.new_state %}
+      {{ new_state is not none and
+         new_state.state not in ['unknown', 'unavailable', 'none'] and
+         new_state.state | float(-1) >= 0 and
+         new_state.state | float(-1) < 15 }}
   # Filter to only Zigbee devices by checking device integration
   - condition: template
     value_template: >
-      {% set dev_id = device_id(trigger.entity_id) %}
+      {% set entity = trigger.event.data.entity_id %}
+      {% set dev_id = device_id(entity) %}
       {% if dev_id %}
         {% set integrations = device_attr(dev_id, 'identifiers') | list %}
         {{ integrations | selectattr('0', 'in', ['zha', 'zigbee2mqtt']) | first is defined }}
@@ -31,10 +40,10 @@ condition:
 
 action:
   - variables:
-      device_id: "{{ trigger.entity_id }}"
-      battery_level: "{{ trigger.to_state.state }}"
-      device_name: "{{ trigger.to_state.attributes.friendly_name | default(trigger.to_state.entity_id) }}"
-      clean_tag: "{{ trigger.entity_id | regex_replace('sensor\\.|_battery', '') | regex_replace('[^a-zA-Z0-9_]', '_') }}"
+      entity: "{{ trigger.event.data.entity_id }}"
+      battery_level: "{{ trigger.event.data.new_state.state }}"
+      device_name: "{{ trigger.event.data.new_state.attributes.friendly_name | default(trigger.event.data.entity_id) }}"
+      clean_tag: "{{ trigger.event.data.entity_id | regex_replace('sensor\\.|_battery', '') | regex_replace('[^a-zA-Z0-9_]', '_') }}"
   - service: notify.mobile_app_motorola_edge_50_pro
     data:
       title: "⚠️ Nízká baterie"
