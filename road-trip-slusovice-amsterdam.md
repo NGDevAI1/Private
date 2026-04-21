@@ -28,6 +28,10 @@ Slušovice → Brno → Nuremberg → Maastricht → Amsterdam
 Amsterdam → Kolín nad Rýnem → Norimberk → Slušovice
 ```
 
+> 🗺️ **[Celá trasa v Google Maps →](https://www.google.com/maps/dir/Slu%C5%A1ovice,+Czech+Republic/Brno,+Czech+Republic/Nuremberg,+Germany/Maastricht,+Netherlands/Amsterdam,+Netherlands/Cologne,+Germany/Nuremberg,+Germany/Slu%C5%A1ovice,+Czech+Republic)**
+
+[![Celková trasa – Slušovice ↔ Amsterdam](https://staticmap.openstreetmap.de/staticmap.php?center=50.5,9.0&zoom=5&size=800x400&markers=49.209,17.577,small-red-cutout|49.452,11.077,small-red-cutout|50.851,5.691,small-red-cutout|52.368,4.904,small-red-cutout|50.933,6.950,small-red-cutout)](https://www.google.com/maps/dir/Slu%C5%A1ovice,+Czech+Republic/Brno,+Czech+Republic/Nuremberg,+Germany/Maastricht,+Netherlands/Amsterdam,+Netherlands/Cologne,+Germany/Nuremberg,+Germany/Slu%C5%A1ovice,+Czech+Republic)
+
 ---
 
 ## 📅 Denní itinerář
@@ -36,6 +40,10 @@ Amsterdam → Kolín nad Rýnem → Norimberk → Slušovice
 
 ### Den 1 – Slušovice → Norimberk (Nuremberg) 🇩🇪
 **Vzdálenost: ≈ 345 km | Jízda: ≈ 3,5 hod**
+
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Slu%C5%A1ovice,+Czech+Republic/Brno,+Czech+Republic/Nuremberg,+Germany)**
+
+[![Mapa trasy – Den 1](https://staticmap.openstreetmap.de/staticmap.php?center=49.3,14.3&zoom=6&size=800x400&markers=49.209,17.577,small-red-cutout|49.195,16.607,small-red-cutout|49.452,11.077,small-red-cutout)](https://www.google.com/maps/dir/Slu%C5%A1ovice,+Czech+Republic/Brno,+Czech+Republic/Nuremberg,+Germany)
 
 **Trasa:** Slušovice → Zlín → D55 → Uherské Hradiště → Brno → D1 → Jihlava → Rozvadov (hranice CZ/DE) → Waidhaus → Amberg → Norimberk
 
@@ -58,6 +66,10 @@ Amsterdam → Kolín nad Rýnem → Norimberk → Slušovice
 
 ### Den 2 – Norimberk → Maastricht 🇳🇱
 **Vzdálenost: ≈ 390 km | Jízda: ≈ 4 hod**
+
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Nuremberg,+Germany/Maastricht,+Netherlands)**
+
+[![Mapa trasy – Den 2](https://staticmap.openstreetmap.de/staticmap.php?center=50.2,8.4&zoom=6&size=800x400&markers=49.452,11.077,small-red-cutout|50.851,5.691,small-red-cutout)](https://www.google.com/maps/dir/Nuremberg,+Germany/Maastricht,+Netherlands)
 
 #### 🌅 Dopoledne v Norimberku
 - **Kaiserburg (Císařský hrad)** – panoramatický výhled přes střechy starého města
@@ -82,6 +94,10 @@ Amsterdam → Kolín nad Rýnem → Norimberk → Slušovice
 ### Den 3 – Maastricht → Amsterdam 🇳🇱
 **Vzdálenost: ≈ 210 km | Jízda: ≈ 2,5 hod**
 
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Maastricht,+Netherlands/Amsterdam,+Netherlands)**
+
+[![Mapa trasy – Den 3](https://staticmap.openstreetmap.de/staticmap.php?center=51.6,5.3&zoom=7&size=800x400&markers=50.851,5.691,small-red-cutout|52.368,4.904,small-red-cutout)](https://www.google.com/maps/dir/Maastricht,+Netherlands/Amsterdam,+Netherlands)
+
 #### 🌄 Dopoledne v Maastrichtu
 - **St. Pietersberg Caves** 🔍 – podzemní chodby s prastarými kresbami v pískovci, průvodcovská prohlídka (~7 €/os)
 - **Apostelhoeve Vineyard** 🔍 – **tajný tip!** Holandská vinice kousek od města, prohlídka a degustace místních vín s výhledem na kopce, rezervace doporučena
@@ -102,6 +118,10 @@ Amsterdam → Kolín nad Rýnem → Norimberk → Slušovice
 
 ### Den 4 – Amsterdam: Na kole za větrnými mlýny 🚲
 **Celý den v Amsterdamu**
+
+> 🗺️ **[Amsterdam + Zaanse Schans v Google Maps →](https://www.google.com/maps/dir/Amsterdam,+Netherlands/Zaanse+Schans,+Netherlands)**
+
+[![Mapa – Den 4](https://staticmap.openstreetmap.de/staticmap.php?center=52.42,4.86&zoom=10&size=800x400&markers=52.368,4.904,small-red-cutout|52.474,4.818,small-red-cutout)](https://www.google.com/maps/dir/Amsterdam,+Netherlands/Zaanse+Schans,+Netherlands)
 
 #### 🚲 Půjčení kol
 Půjčovny u Central Station: **MacBike**, **A-Bike**, **Yellow Bike**
@@ -130,6 +150,10 @@ Půjčovny u Central Station: **MacBike**, **A-Bike**, **Yellow Bike**
 
 ### Den 5 – Amsterdam: Kavárna s alpakami + skryté perly 🦙☕
 **Celý den v Amsterdamu**
+
+> 🗺️ **[Amsterdam → Alpaca Eco Farm v Google Maps →](https://www.google.com/maps/dir/Amsterdam,+Netherlands/Egmond+aan+den+Hoef,+Netherlands)**
+
+[![Mapa – Den 5](https://staticmap.openstreetmap.de/staticmap.php?center=52.5,4.78&zoom=9&size=800x400&markers=52.368,4.904,small-red-cutout|52.622,4.664,small-red-cutout)](https://www.google.com/maps/dir/Amsterdam,+Netherlands/Egmond+aan+den+Hoef,+Netherlands)
 
 #### 🦙☕ HLAVNÍ HIGHLIGHT: Alpaca Eco Farm – HIGH TEA S ALPAKAMI!
 > **Alpaca Eco Farm, Egmond aan de Hoef**
@@ -163,6 +187,10 @@ Půjčovny u Central Station: **MacBike**, **A-Bike**, **Yellow Bike**
 ### Den 6 – Amsterdam → Kolín nad Rýnem (Köln) 🇩🇪
 **Vzdálenost: ≈ 270 km | Jízda: ≈ 2,5 hod**
 
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Amsterdam,+Netherlands/Cologne,+Germany)**
+
+[![Mapa trasy – Den 6](https://staticmap.openstreetmap.de/staticmap.php?center=51.7,5.9&zoom=7&size=800x400&markers=52.368,4.904,small-red-cutout|50.933,6.950,small-red-cutout)](https://www.google.com/maps/dir/Amsterdam,+Netherlands/Cologne,+Germany)
+
 #### 🌅 Poslední ráno v Amsterdamu
 - **Westergasfabriek** 🔍 – bývalá průmyslová plynárna přeměněná na kulturní park; ranní káva v **Brouwerij Troost**, procházka parkem
 - **Cuypers Bibliotheek** 🔍 – skrytá velkolepá knihovna v Rijksmuseu (vstup s lístkem do muzea nebo jen nakouknout)
@@ -183,6 +211,10 @@ Půjčovny u Central Station: **MacBike**, **A-Bike**, **Yellow Bike**
 
 ### Den 7 – Kolín nad Rýnem → Norimberk → Slušovice 🏠
 **Vzdálenost: ≈ 585 km celkem | 2 jízdy každá pod 400 km**
+
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Cologne,+Germany/Nuremberg,+Germany/Slu%C5%A1ovice,+Czech+Republic)**
+
+[![Mapa trasy – Den 7](https://staticmap.openstreetmap.de/staticmap.php?center=50.0,12.3&zoom=6&size=800x400&markers=50.933,6.950,small-red-cutout|49.452,11.077,small-red-cutout|49.209,17.577,small-red-cutout)](https://www.google.com/maps/dir/Cologne,+Germany/Nuremberg,+Germany/Slu%C5%A1ovice,+Czech+Republic)
 
 > **Doporučujeme brzký start (7:00–7:30)** pro pohodlný příjezd domů odpoledne.
 
