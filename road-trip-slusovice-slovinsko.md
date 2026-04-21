@@ -28,6 +28,10 @@ Slušovice → Bratislava → Graz (AT) → Villach (AT) → Tarvisio (IT)
           → Bovec / Soča (SI) → Villach (AT) → Graz (AT) → Slušovice
 ```
 
+> 🗺️ **[Celá trasa v Google Maps →](https://www.google.com/maps/dir/Slu%C5%A1ovice,+Czech+Republic/Bratislava,+Slovakia/Graz,+Austria/Villach,+Austria/Tarvisio,+Italy/Bled,+Slovenia/Bohinj,+Slovenia/Bovec,+Slovenia/Graz,+Austria/Slu%C5%A1ovice,+Czech+Republic)**
+
+[![Celková trasa – Slušovice ↔ Triglavský NP](https://staticmap.openstreetmap.de/staticmap.php?center=47.5,14.8&zoom=6&size=800x400&markers=49.209,17.577,small-red-cutout|48.149,17.108,small-red-cutout|47.071,15.440,small-red-cutout|46.611,13.856,small-red-cutout|46.506,13.579,small-red-cutout|46.368,14.112,small-red-cutout|46.285,13.873,small-red-cutout|46.338,13.551,small-red-cutout)](https://www.google.com/maps/dir/Slu%C5%A1ovice,+Czech+Republic/Bratislava,+Slovakia/Graz,+Austria/Villach,+Austria/Tarvisio,+Italy/Bled,+Slovenia/Bohinj,+Slovenia/Bovec,+Slovenia/Graz,+Austria/Slu%C5%A1ovice,+Czech+Republic)
+
 ---
 
 ## 📅 Denní itinerář
@@ -36,6 +40,10 @@ Slušovice → Bratislava → Graz (AT) → Villach (AT) → Tarvisio (IT)
 
 ### Den 1 – Slušovice → Graz 🇦🇹
 **Vzdálenost: ≈ 430 km | Jízda: ≈ 4,5 hod**
+
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Slu%C5%A1ovice,+Czech+Republic/Bratislava,+Slovakia/Graz,+Austria)**
+
+[![Mapa trasy – Den 1](https://staticmap.openstreetmap.de/staticmap.php?center=48.1,16.5&zoom=7&size=800x400&markers=49.209,17.577,small-red-cutout|48.149,17.108,small-red-cutout|47.071,15.440,small-red-cutout)](https://www.google.com/maps/dir/Slu%C5%A1ovice,+Czech+Republic/Bratislava,+Slovakia/Graz,+Austria)
 
 **Trasa:** Slušovice → Zlín → Uherské Hradiště → Brno → D2 → Bratislava → Vídeň → A2 → Graz
 
@@ -57,6 +65,10 @@ Slušovice → Bratislava → Graz (AT) → Villach (AT) → Tarvisio (IT)
 
 ### Den 2 – Graz: E-biking ve Štýrských Alpách 🚵🇦🇹
 **Celý den na elektrokolech | Graz**
+
+> 🗺️ **[Almenland Teichalm v Google Maps →](https://www.google.com/maps/search/Almenland+Teichalm,+Steiermark,+Austria)**
+
+[![Mapa – Den 2](https://staticmap.openstreetmap.de/staticmap.php?center=47.15,15.5&zoom=9&size=800x400&markers=47.071,15.440,small-red-cutout|47.270,15.600,small-red-cutout)](https://www.google.com/maps/search/Almenland+Teichalm,+Steiermark,+Austria)
 
 > **🔋 E-bike trasy:** Okolí Grazu je na elektrokola jako stvořené – kombinace lesních cest, alpských luk a výborně značených MTB tras.
 
@@ -83,6 +95,10 @@ Méně navštívený ski resort s výbornou sítí e-bike tras v létě. Gondola
 
 ### Den 3 – Graz → Villach + E-biking v Korutanech 🇦🇹
 **Vzdálenost řízení: ≈ 130 km | Jízda: ≈ 1,5 hod**
+
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Graz,+Austria/W%C3%B6rthersee,+Austria/Villach,+Austria)**
+
+[![Mapa trasy – Den 3](https://staticmap.openstreetmap.de/staticmap.php?center=46.85,14.65&zoom=8&size=800x400&markers=47.071,15.440,small-red-cutout|46.640,14.145,small-red-cutout|46.611,13.856,small-red-cutout)](https://www.google.com/maps/dir/Graz,+Austria/W%C3%B6rthersee,+Austria/Villach,+Austria)
 
 #### 🚵 E-biking u Wörthersee ⭐
 > **Délka: ≈ 55 km (celý okruh jezera) nebo 20–30 km (část) | Převýšení: ≈ minimální | Obtížnost: lehká**
@@ -112,6 +128,10 @@ Méně navštívený ski resort s výbornou sítí e-bike tras v létě. Gondola
 
 ### Den 4 – Villach → Tarvisio (Itálie) + E-biking → Kranjska Gora (Slovinsko) 🇮🇹🇸🇮
 **Vzdálenost řízení: ≈ 110 km celkem | Jízda: ≈ 1,5 hod**
+
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Villach,+Austria/Tarvisio,+Italy/Kranjska+Gora,+Slovenia)**
+
+[![Mapa trasy – Den 4](https://staticmap.openstreetmap.de/staticmap.php?center=46.55,13.75&zoom=9&size=800x400&markers=46.611,13.856,small-red-cutout|46.506,13.579,small-red-cutout|46.484,13.786,small-red-cutout)](https://www.google.com/maps/dir/Villach,+Austria/Tarvisio,+Italy/Kranjska+Gora,+Slovenia)
 
 > Tento den prochází třemi zeměmi (AT→IT→SI) v okruhu pouhých 50 km – unikátní trojmezí!
 
@@ -145,6 +165,10 @@ Slavná cyklotrasa vedoucí od Salzburgu přes Tarvisio až na Jaderské moře (
 ### Den 5 – Bled + Pokljuka: Triglavský NP 🇸🇮
 **Celý den v okolí Bledu | Triglavský národní park**
 
+> 🗺️ **[Bled + Pokljuka v Google Maps →](https://www.google.com/maps/search/Bled,+Slovenia)**
+
+[![Mapa – Den 5](https://staticmap.openstreetmap.de/staticmap.php?center=46.36,14.07&zoom=11&size=800x400&markers=46.368,14.112,small-red-cutout|46.320,13.950,small-red-cutout)](https://www.google.com/maps/search/Bled,+Slovenia)
+
 > Bled je nejfotografovanější místo Slovinska – jezero s ostrovním kostelíkem a hradem na skále nad ním. S e-bikem je okolí ještě přístupnější!
 
 #### 🚵 Hlavní trasa: Pokljuka plateau Loop ⭐⭐
@@ -170,6 +194,10 @@ Slavná cyklotrasa vedoucí od Salzburgu přes Tarvisio až na Jaderské moře (
 
 ### Den 6 – Bohinj + Triglav: Srdce národního parku 🇸🇮
 **Vzdálenost řízení: ≈ 25 km od Bledu | Celý den v Bohinji**
+
+> 🗺️ **[Bled → Bohinj v Google Maps →](https://www.google.com/maps/dir/Bled,+Slovenia/Bohinj,+Slovenia)**
+
+[![Mapa – Den 6](https://staticmap.openstreetmap.de/staticmap.php?center=46.32,13.95&zoom=11&size=800x400&markers=46.368,14.112,small-red-cutout|46.285,13.873,small-red-cutout|46.297,13.754,small-red-cutout)](https://www.google.com/maps/dir/Bled,+Slovenia/Bohinj,+Slovenia)
 
 > Bohinj je větší a klidnější jezero než Bled – pravé srdce Triglavského NP. Méně turistů, autentičtější atmosféra a výborné e-bike trasy!
 
@@ -207,6 +235,10 @@ Méně navštívená soutěska za vesnicí Stara Fužina u Bohinju – e-bikem p
 ### Den 7 – Vršič průsmyk + Údolí Soče (Bovec) 🇸🇮
 **Vzdálenost řízení: ≈ 60 km od Bledu do Bovce | Nejlepší den výletu!**
 
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Kranjska+Gora,+Slovenia/Vr%C5%A1i%C4%8D,+Slovenia/Bovec,+Slovenia)**
+
+[![Mapa trasy – Den 7](https://staticmap.openstreetmap.de/staticmap.php?center=46.43,13.69&zoom=10&size=800x400&markers=46.484,13.786,small-red-cutout|46.437,13.744,small-red-cutout|46.338,13.551,small-red-cutout|46.188,13.733,small-red-cutout)](https://www.google.com/maps/dir/Kranjska+Gora,+Slovenia/Vr%C5%A1i%C4%8D,+Slovenia/Bovec,+Slovenia)
+
 > Tento den je absolutní highlight celé cesty – kombinace nejkrásnějšího průsmyku Slovinska s legendární smaragdovou řekou Sočou.
 
 #### 🚵 VRCHOL VÝLETU: Vršič Pass (1 611 m n. m.) ⭐⭐⭐
@@ -218,13 +250,26 @@ Méně navštívená soutěska za vesnicí Stara Fužina u Bohinju – e-bikem p
 > - **Sjezd** po jihozápadní straně do Trenty – 26 serpentin dolů, parádní!
 > - **Ruská kaple** 🔍 – historická kaple postavena ruskými zajatci (1916) při stavbě silnice během 1. světové války; 300 m pod vrcholem
 
-#### 🚵 Soča Valley E-biking: Bovec area ⭐⭐
-> **Délka: ≈ 30–40 km | Obtížnost: lehká–střední | Krajina: neobyčejná**
+#### 🚵 Soča Valley E-biking: Bovec → Tolmin ⭐⭐
+> **Délka: ≈ 55–65 km (tam i zpět) | Obtížnost: lehká–střední | Krajina: neobyčejná**
 >
-> Soča je jedna z nejkrásnějších řek Evropy – smaragdově zelená, ledovcová čistota, dramatická příroda. Okolí Bovce nabízí výborné MTB trasy přístupné na e-bikolech:
-> - **Soča Trail (Soška pot):** Označená turistická trasa podél řeky – horní úseky po zpevněných lesních cestách dostupné e-bikem
+> Soča je jedna z nejkrásnějších řek Evropy – smaragdově zelená, ledovcová čistota, dramatická příroda. Označená **Soška pot (Soča Trail)** vede celé údolí od Bovce přes Tolmin až k moři – trasa je ideální pro e-bikolisty!
+> - **Soča Trail (Soška pot):** Zpevněné lesní a říční cesty, dostupné e-bikem, téměř bez aut
 > - **Bovec valley circuit:** 25 km okruh přes vesnice Soče s výhledy na Kanin masiv
 > - **Trenta valley:** Klidná boční dolina s minimem aut a max přírodou
+
+#### 🍽️ CÍL E-BIKE VÝLETU: Letni Vrt Pr Jakču ⭐⭐
+> **Letni Vrt Pr Jakču Franci Rutar s.p.**
+> 📍 Zadlaz – Čadrg 4, 5220 Tolmin, Slovinsko
+> [📍 Otevřít v Google Maps →](https://www.google.com/maps/search/Zadlaz+-+%C4%8Cadrg+4,+5220+Tolmin,+Slovenija)
+>
+> **Letní zahrada / venkovská restaurace** vysoko nad údolím Soče, s výhledem na okolní hory a řeku. Malé rodinné podnik Franciho Rutara – přesně to pravé po celodenní jízdě na e-bikolech! Tradiční slovinská kuchyně, lokální produkty.
+>
+> - **Jak se dostat:** Po Soča Trail z Bovce (~28 km) přes Tolmin do obce Zadlaz-Čadrg; krátký výjezd do kopce (~200 m převýšení) nad Tolminem – s e-bikem pohodlně zvládnutelné
+> - **Celková vzdálenost Bovec → Letni Vrt → Bovec:** ≈ 60 km (ideální celodenní e-bike výlet)
+> - **Tip:** Rezervujte předem – malý podnik s omezenou kapacitou
+
+[![Soča valley – Bovec → Tolmin](https://staticmap.openstreetmap.de/staticmap.php?center=46.26,13.64&zoom=11&size=800x400&markers=46.338,13.551,small-red-cutout|46.188,13.733,small-red-cutout|46.175,13.740,small-red-cutout)](https://www.google.com/maps/dir/Bovec,+Slovenia/Zadlaz+-+%C4%8Cadrg+4,+5220+Tolmin,+Slovenija)
 
 #### 🔍 Tajný tip: Kanin cable car + e-MTB trails
 Lanovka Kanin vynese na 2 289 m n. m. – odtud vedou náročné MTB trasy zpět do Bovce (1 200 m převýšení dolů!). Pro zkušenější jezdce absolutní zážitek. Kolem s lanovkou: ≈ 25 €.
@@ -239,6 +284,10 @@ Lanovka Kanin vynese na 2 289 m n. m. – odtud vedou náročné MTB trasy zpět
 
 ### Den 8 – Bovec → Villach → Graz 🇦🇹
 **Vzdálenost: ≈ 350 km | Jízda: ≈ 4 hod**
+
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Bovec,+Slovenia/Tarvisio,+Italy/Villach,+Austria/Graz,+Austria)**
+
+[![Mapa trasy – Den 8](https://staticmap.openstreetmap.de/staticmap.php?center=46.85,14.5&zoom=7&size=800x400&markers=46.338,13.551,small-red-cutout|46.611,13.856,small-red-cutout|47.071,15.440,small-red-cutout)](https://www.google.com/maps/dir/Bovec,+Slovenia/Tarvisio,+Italy/Villach,+Austria/Graz,+Austria)
 
 **Trasa:** Bovec → Predilský průsmyk (IT) → Tarvisio → A23 → Villach → A2 → Graz
 
@@ -256,6 +305,10 @@ Pokud máte energii, zastávka na dopolední jízdu podél Drau-Radwegu nebo vý
 
 ### Den 9 – Graz → Slušovice 🏠
 **Vzdálenost: ≈ 430 km | Jízda: ≈ 4,5 hod**
+
+> 🗺️ **[Otevřít trasu v Google Maps →](https://www.google.com/maps/dir/Graz,+Austria/Bratislava,+Slovakia/Slu%C5%A1ovice,+Czech+Republic)**
+
+[![Mapa trasy – Den 9](https://staticmap.openstreetmap.de/staticmap.php?center=48.1,16.5&zoom=7&size=800x400&markers=47.071,15.440,small-red-cutout|48.149,17.108,small-red-cutout|49.209,17.577,small-red-cutout)](https://www.google.com/maps/dir/Graz,+Austria/Bratislava,+Slovakia/Slu%C5%A1ovice,+Czech+Republic)
 
 > **Doporučujeme brzký start (7:00–7:30)** pro pohodlný příjezd domů odpoledne.
 
@@ -286,7 +339,7 @@ Pokud máte energii, zastávka na dopolední jízdu podél Drau-Radwegu nebo vý
 | 12 | **Bohinj (SI)** | Jezero + Savica | ≈ 25 km | Lehká–střední | Cyklostezka + lesní |
 | 13 | **Vogel (SI)** 🔍 | Lanovka + sjezd | ≈ 15 km | Náročná | MTB trails |
 | 14 | **Vršič průsmyk (SI)** | Kranjska Gora → vrchol | ≈ 25 km | Velmi náročná | Asfalt (50 serpentin!) |
-| 15 | **Bovec / Soča (SI)** | Soča valley circuit | ≈ 35 km | Lehká–střední | Lesní cesty, asfalt |
+| 15 | **Bovec / Soča (SI)** | Soča Trail → Tolmin + Letni Vrt Pr Jakču | ≈ 60 km (tam+zpět) | Lehká–střední | Lesní cesty, asfalt |
 | 16 | **Kanin (SI)** 🔍 | Lanovka + sjezd MTB | ≈ 20 km | Náročná–expert | MTB trails |
 
 ---
@@ -385,6 +438,7 @@ Slušovice 🏠 Den 9
 | Vršič | Ruská kaple | Historická kaple z roku 1916 pod vrcholem průsmyku, naprostý klid |
 | Bovec | Kanin lanovka | Výjezd na 2 289 m, sjezd na e-MTB – extrémní dobrodružství |
 | Bovec | Mostnica kayaking | Kombinace e-biking + rafting na Soče přes půlden |
+| **Tolmin** | **Letni Vrt Pr Jakču** (Zadlaz-Čadrg) | Rodinná letní zahrada nad údolím Soče – cíl celodenní e-bike jízdy ze Bovce po Soča Trail |
 
 ---
 
@@ -514,7 +568,7 @@ Slušovice 🏠 Den 9
 | 4 | Tarvisio (IT) | **🚵 Laghi di Fusine + Ciclovia Alpe Adria** |
 | 5 | Bled | **🚵 Pokljuka plošina + Bledský hrad, kremšnita** |
 | 6 | Bohinj | **🚵 Savica vodopád + Vogel lanovka** |
-| **7** | **Vršič + Bovec** | **🚵⭐ VRŠIČ PRŮSMYK (50 serpentin!) + Soča valley** |
+| **7** | **Vršič + Bovec + Tolmin** | **🚵⭐ VRŠIČ PRŮSMYK (50 serpentin!) + Soča Trail → 🍽️ Letni Vrt Pr Jakču (Zadlaz-Čadrg)** |
 | 8 | Graz | Zpáteční cesta, Murinsel večer |
 | 9 | Domov | 🏠 Slušovice |
 
