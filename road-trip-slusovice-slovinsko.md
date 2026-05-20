@@ -32,6 +32,8 @@ Slovinsko
 <img width="1676" height="1112" alt="image" src="https://github.com/user-attachments/assets/98d7c817-82b0-4ea2-9ada-c43f96f54ec7" />
 Od vodopádů Savica do Bled je nová cyklostezka, po rovině, cca 40km. Kolem řeky
 
+Tipy zde: https://www.facebook.com/profile/100070400941459/search/?q=slovinsko
+
 ---
 
 ## 🗺️ Trasa na první pohled
