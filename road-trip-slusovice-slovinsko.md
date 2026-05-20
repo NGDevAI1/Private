@@ -24,6 +24,9 @@ Moje poznámky:
 https://mapy.com/cs/turisticka?source=osm&id=1080663492&ds=2&x=13.7167512&y=45.4533955&z=11
 IT-SLO-HR Parenzana Dálková cyklotrasa
 Nejvýznamnější cyklotrasou vedoucí po bývalé železnici mezi Itálií a Chorvatskem je legendární Parenzana. Trasa dlouhá 123 km kopíruje bývalou úzkorozchodnou trať z italského Terstu (Trieste), vede přes Slovinsko a končí v chorvatském letovisku Poreč.
+<img width="1221" height="1490" alt="image" src="https://github.com/user-attachments/assets/1b09a1a3-9bfe-427c-a396-2df23eceda08" />
+
+
 
 Slovinsko
 <img width="1676" height="1112" alt="image" src="https://github.com/user-attachments/assets/98d7c817-82b0-4ea2-9ada-c43f96f54ec7" />
