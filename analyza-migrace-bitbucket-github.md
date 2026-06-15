@@ -136,7 +136,7 @@ Přínosy:
 
 ### 2. GitHub Actions jako jednotná automatizační platforma
 
-GitHub Actions může nahradit Bitbucket Pipelines, část Jenkins/Bamboo workflow nebo interní skripty.
+GitHub Actions může nahradit Bitbucket Pipelines, část Jenkins/Bamboo workflow, TeamCity nebo interní skripty. Pro .NET aplikace je možné v GitHub Actions nastavit kompletní build pipeline včetně restore, buildu, testů, publish kroku, spuštění PowerShell skriptů, vytvoření ZIP balíčku a publikování artefaktů.
 
 Nové možnosti:
 
@@ -154,6 +154,30 @@ Komplikace:
 - bude nutné přemapovat secrets, proměnné, cache, artefakty a deployment environments,
 - placené minuty a storage mohou zvýšit náklady,
 - self-hosted runners vyžadují provozní odpovědnost.
+
+
+#### Náhrada TeamCity pro .NET buildy
+
+GitHub Actions může TeamCity pro běžné .NET buildy nahradit. Prakticky lze nastavit:
+
+- build na `windows-latest`, `ubuntu-latest` nebo vlastním self-hosted Windows runneru,
+- instalaci konkrétní verze .NET SDK přes `actions/setup-dotnet`,
+- `dotnet restore`, `dotnet build`, `dotnet test`, `dotnet publish`, případně MSBuild pro starší .NET Framework projekty,
+- spuštění PowerShell skriptů přes `pwsh` nebo Windows PowerShell,
+- práci s NuGet zdroji a privátními feedy,
+- vytvoření ZIP balíčku přes `Compress-Archive`, 7-Zip nebo vlastní build skript,
+- publikování ZIP balíčku jako GitHub Actions artifact, GitHub Release asset, GitHub Packages nebo do externího úložiště,
+- deployment environments, schvalování, secrets, proměnné, matice buildů a reusable workflows.
+
+Doporučení: pokud TeamCity build využívá lokální nástroje, licence, certifikáty, přístup do interní sítě nebo starší .NET Framework závislosti, je vhodnější začít se self-hosted Windows runnerem. Pokud jde o čistý .NET / .NET Core build bez interních závislostí, může stačit GitHub-hosted runner.
+
+Komplikace při nahrazení TeamCity:
+
+- build chainy, snapshot dependencies a templaty z TeamCity je nutné převést do GitHub Actions workflow ručně,
+- je potřeba ověřit artifact retention a velikosti ZIP balíčků,
+- u desktopových nebo legacy .NET Framework aplikací mohou být potřeba Windows runners a specifické SDK / Visual Studio Build Tools,
+- code signing a certifikáty vyžadují bezpečné uložení secretů nebo napojení na externí signing službu,
+- je nutné porovnat cenu GitHub Actions minut proti současným TeamCity agentům.
 
 ### 3. Bezpečnost a compliance
 
@@ -180,7 +204,7 @@ Komplikace:
 
 ### 4. GitHub Copilot a AI workflow
 
-Aktuální upřesnění: počítáme s 10 vývojáři, všichni GitHub Copilot používají a někteří mají individuální Copilot Pro. To znamená, že Copilot už není jen potenciální nová funkcionalita po migraci, ale existující firemní náklad a nástroj, který je vhodné převést z individuálního režimu do centrální správy.
+Aktuální upřesnění: počítáme s 10 vývojáři, všichni GitHub Copilot používají a někteří mají individuální Copilot Pro. U firemního Copilotu je přesnější uvažovat nákup po **seatech**, nikoli obecně „za uživatele“: organizace přiřazuje konkrétní Copilot seat konkrétnímu člověku a podle přiřazených seatů se účtuje. To znamená, že Copilot už není jen potenciální nová funkcionalita po migraci, ale existující firemní náklad a nástroj, který je vhodné převést z individuálního režimu do centrální správy.
 
 Přechod na GitHub může otevřít cestu k širšímu využití GitHub Copilot Business nebo Enterprise.
 
@@ -202,16 +226,27 @@ Komplikace:
 
 #### Dopad pro 10 vývojářů
 
-Pokud dnes vývojáři používají individuální Copilot účty, firma pravděpodobně nemá jednotnou kontrolu nad licencemi, offboardingem, policy nastavením a billingem. Přechod na Copilot Business obvykle nebude levnější než individuální Copilot Pro, ale řeší firemní správu.
+Pokud dnes vývojáři používají individuální Copilot účty, firma pravděpodobně nemá jednotnou kontrolu nad licencemi, offboardingem, policy nastavením a billingem. Přechod na firemní Copilot seats obvykle nebude levnější než individuální Copilot Pro, ale řeší centrální správu a pooling kreditů.
 
-| Copilot scénář pro 10 vývojářů | Orientační měsíční náklad | Dopad |
-|---|---:|---|
-| Individuální Copilot Pro pro všechny | 100 USD | Nejnižší cena, ale bez centrální firemní správy. |
-| Mix individuálních Copilot účtů, někteří Pro | cca 10–390 USD podle mixu Free / Pro / Pro+ | Nejednotný billing, různé limity a horší kontrola; minimum předpokládá alespoň jeden placený Pro účet. |
-| Copilot Business pro všech 10 vývojářů | cca 190 USD | Doporučená firemní varianta: centrální seats, policy a správa. |
-| Copilot Enterprise pro všech 10 vývojářů | cca 390 USD | Vhodné hlavně při Enterprise adopci a vyšších compliance / AI požadavcích. |
+Poznámka k názvosloví: veřejné GitHub plány standardně uvádějí Copilot Business a Copilot Enterprise; pokud obchodní nabídka používá označení „Business Pro“, je nutné ověřit přesnou kreditovou alokaci ve smlouvě. Níže je použita pracovní kalkulace pro 4 vyšší business seats a 6 standardních Business seats.
 
-Doporučení: protože Copilot už používají všichni vývojáři, nedává smysl dělat pouze adopční pilot. Lepší je udělat krátký administrativní pilot převodu 1–2 uživatelů na Copilot Business, ověřit billing, policy, IDE přístup a následně převést všech 10 vývojářů. Individuální Pro předplatná je vhodné zrušit nebo nechat doběhnout podle billing cyklu, aby nevznikalo dvojí placení.
+| Copilot scénář pro 10 vývojářů | Orientační měsíční náklad | Kredity / měsíc | Dopad |
+|---|---:|---:|---|
+| 10× Personal Pro | 100 USD | 15 000 kreditů | Nejnižší placená varianta, ale bez centrální firemní správy a bez pooling kreditů. |
+| 10× Personal Pro+ | 390 USD | 70 000 kreditů | Výrazně více kreditů pro individuální power users, ale stále bez firemní správy seatů. |
+| 6× Copilot Business standard + 4× vyšší business seat, pokud vyšší seat odpovídá Enterprise kreditům | cca 270 USD | cca 27 000 kreditů | Vyšší než 10× Pro, ale centrální správa, policy, billing a pooled usage. |
+| 6× Copilot Business standard + 4× vyšší business seat, pokud vyšší seat odpovídá Pro+ kreditům | cca 270 USD | cca 39 400 kreditů | Střední varianta mezi Personal Pro a Personal Pro+; přesné kredity závisí na nabídce. |
+| 10× Copilot Business standard | cca 190 USD | cca 19 000 kreditů | Doporučený základ pro centrální firemní správu, pokud všichni nepotřebují vyšší limit. |
+| 10× Copilot Enterprise | cca 390 USD | cca 39 000 kreditů | Vhodné hlavně při Enterprise adopci, vyšší compliance a GitHub knowledge-base scénářích. |
+
+Porovnání kreditů:
+
+- Personal Pro: cca 1 500 kreditů na osobu měsíčně.
+- Personal Pro+: cca 7 000 kreditů na osobu měsíčně.
+- Copilot Business standard: orientačně cca 1 900 kreditů na seat měsíčně, navíc s organizací řízeným použitím.
+- Enterprise / vyšší business seat: podle konkrétní nabídky ověřit, zda odpovídá cca 3 900 kreditům na seat nebo jiné Pro+ alokaci.
+
+Doporučení: pro 10 vývojářů dává ekonomicky i provozně smysl začít se 6 standardními Business seats a 4 vyššími seats jen pro lidi, kteří reálně používají agentní workflow, častý chat, code review nebo prémiové modely. Po 1–2 měsících je vhodné vyhodnotit spotřebu kreditů a vyšší seats ponechat jen tam, kde dávají měřitelný přínos. Individuální Pro / Pro+ předplatná je vhodné zrušit nebo nechat doběhnout podle billing cyklu, aby nevznikalo dvojí placení.
 
 ### 5. Silnější ekosystém integrací
 
@@ -343,11 +378,13 @@ Ceny níže jsou orientační veřejné list ceny v USD bez DPH, bez individuál
 | GitHub Team | uživatel / měsíc | cca 4 USD | Menší organizace bez enterprise požadavků | Levnější varianta, ale méně enterprise funkcí. |
 | GitHub Enterprise Cloud | uživatel / měsíc | cca 21 USD | Organizace vyžadující SSO, audit, enterprise policy | Pravděpodobná cílová varianta pro firmu. |
 | GitHub Advanced Security | aktivní committer / měsíc | cca 49 USD | Pokud chcete CodeQL, secret scanning, dependency review ve větším rozsahu | Významná nákladová položka; licencovat cíleně. |
-| GitHub Copilot Business | uživatel / měsíc | cca 19 USD | AI asistence pro vývojáře | Pro 10 vývojářů cca 190 USD/měsíc; doporučené pro centrální firemní správu. |
-| GitHub Copilot Enterprise | uživatel / měsíc | cca 39 USD | Pokročilejší enterprise AI scénáře | Pro 10 vývojářů cca 390 USD/měsíc; vhodné až při jasné potřebě enterprise AI funkcí. |
-| GitHub Actions | minuta / storage | podle OS a spotřeby | CI/CD po překročení zahrnutých limitů | Linux bývá nejlevnější, macOS výrazně dražší. |
+| GitHub Copilot Business | seat / měsíc | cca 19 USD | AI asistence pro vývojáře | Pro 10 standardních seatů cca 190 USD/měsíc; kredity jsou řízené organizací. |
+| GitHub Copilot Enterprise / vyšší business seat | seat / měsíc | cca 39 USD | Pokročilejší AI scénáře | Pro 4 vyšší seats cca 156 USD/měsíc; přesnou kreditovou alokaci Business Pro ověřit ve smlouvě. |
+| GitHub Actions | minuta / storage | podle OS a spotřeby | CI/CD po překročení zahrnutých limitů | Může nahradit TeamCity pro .NET buildy; Linux bývá nejlevnější, Windows dražší, macOS výrazně dražší. |
 | GitHub Codespaces | hodiny + storage | podle velikosti stroje | Cloud dev prostředí | Volitelné, vhodné pro onboarding nebo specifické týmy. |
 | GitHub Packages / artefakty | storage + přenosy | podle spotřeby | Registry, artefakty, kontejnery | Zvážit proti stávajícím registrům. |
+| Self-hosted Windows runner | stroj / provoz | dle infrastruktury | Pokud .NET build vyžaduje interní síť, licence, certifikáty nebo legacy SDK | Často nejlepší náhrada TeamCity agentů pro složitější .NET buildy. |
+| TeamCity licence / agenti | licence + infrastruktura | dle současné smlouvy | Potenciálně odstranitelný náklad po migraci CI/CD | Úspora závisí na počtu agentů a složitosti build chainů. |
 | Bitbucket Standard | uživatel / měsíc | cca 3–4 USD | Současný nebo alternativní stav | Levnější Git hosting. |
 | Bitbucket Premium | uživatel / měsíc | cca 6–8 USD | Současný stav s pokročilejšími funkcemi | Některé bezpečnostní funkce mohou být v ceně. |
 | Jira Software Standard | uživatel / měsíc | cca 7–9 USD | Pokud Jira zůstane | Pravděpodobně zůstane kvůli backlogu a timesheetům. |
@@ -389,9 +426,9 @@ Pro popsanou situaci je nejvhodnější cílový stav:
 - GitHub Enterprise Cloud jako hlavní platforma pro repozitáře, pull requesty, code review, CI/CD a security.
 - Jira ponechat jako systém pro projektové řízení, timesheety a business reporting.
 - GitHub for Jira integrace jako povinná součást workflow.
-- GitHub Actions postupně zavádět místo Bitbucket Pipelines.
+- GitHub Actions postupně zavádět místo Bitbucket Pipelines a vyhodnotit náhradu TeamCity pro .NET buildy.
 - GitHub Advanced Security zavést nejprve pilotně pro kritické repozitáře.
-- Copilot převést z individuálních účtů do Copilot Business pro všech 10 vývojářů; pilotovat už jen administrativní převod, policy a billing.
+- Copilot převést z individuálních účtů do firemních seatů: výchozí scénář 6× Business standard + 4× vyšší Business Pro / Enterprise-like seat; po pilotu vyhodnotit reálnou spotřebu kreditů.
 - Confluence ponechat, pokud je využívaná jako znalostní báze.
 
 ## Rozhodovací kritéria
@@ -419,7 +456,7 @@ Migraci je vhodné odložit nebo omezit, pokud:
 2. Vybrat pilotní repozitáře.
 3. Založit testovací GitHub organizaci nebo enterprise sandbox.
 4. Ověřit migraci pomocí GitHub Enterprise Importer, pokud chcete přenést i PR metadata; pro čistý kód stačí mirror migrace.
-5. Převést jednu reálnou pipeline na GitHub Actions.
+5. Převést jednu reálnou .NET / TeamCity pipeline na GitHub Actions včetně PowerShell skriptů a ZIP artefaktu.
 6. Propojit pilot s Jira.
 7. Spočítat reálné měsíční náklady podle spotřeby.
 8. Vyhodnotit pilot s vývojáři, IT, security a product/project managementem.
@@ -427,6 +464,7 @@ Migraci je vhodné odložit nebo omezit, pokud:
 ## Zdroje k ověření
 
 - GitHub Pricing: https://github.com/pricing
+- GitHub Copilot plans: https://github.com/features/copilot/plans
 - GitHub Enterprise Importer dokumentace: https://docs.github.com/en/migrations/using-github-enterprise-importer
 - Bitbucket migrations with GitHub Enterprise Importer: https://docs.github.com/en/migrations/using-github-enterprise-importer/migrating-from-bitbucket-to-github-enterprise-cloud
 - GitHub Actions billing: https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions
