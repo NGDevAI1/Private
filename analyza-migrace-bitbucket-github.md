@@ -206,8 +206,8 @@ Pokud dnes vývojáři používají individuální Copilot účty, firma pravdě
 
 | Copilot scénář pro 10 vývojářů | Orientační měsíční náklad | Dopad |
 |---|---:|---|
-| Individuální Copilot Pro pro všechny | cca 100 USD | Nejnižší cena, ale bez centrální firemní správy. |
-| Mix individuálních Copilot účtů, někteří Pro | cca 0–390 USD podle mixu | Nejednotný billing, různé limity a horší kontrola. |
+| Individuální Copilot Pro pro všechny | 100 USD | Nejnižší cena, ale bez centrální firemní správy. |
+| Mix individuálních Copilot účtů, někteří Pro | cca 10–390 USD podle mixu Free / Pro / Pro+ | Nejednotný billing, různé limity a horší kontrola; minimum předpokládá alespoň jeden placený Pro účet. |
 | Copilot Business pro všech 10 vývojářů | cca 190 USD | Doporučená firemní varianta: centrální seats, policy a správa. |
 | Copilot Enterprise pro všech 10 vývojářů | cca 390 USD | Vhodné hlavně při Enterprise adopci a vyšších compliance / AI požadavcích. |
 
