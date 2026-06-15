@@ -13,9 +13,9 @@ Celkem **13 databází**, celková velikost **~35 GB** – viz tabulka:
 
 | Databáze | Velikost (MB) | Poznámka |
 |---|---|---|
-| ReportServer | 14 608 | SSRS katalog |
-| DN.LOG | 7 784 | |
-| DN.ITM | 7 671 | |
+| ReportServer | 14 608 | SSRS katalog POZOR 99% velikosti je LOG |
+| DN.LOG | 7 784 | Lze vynechat |
+| DN.ITM | 7 671 | POZOR 99% velikosti je LOG |
 | DN.GDA | 1 053 | |
 | DN.OPR | 946 | |
 | DN.CFG | 646 | |
@@ -26,6 +26,7 @@ Celkem **13 databází**, celková velikost **~35 GB** – viz tabulka:
 | DN.TRX | 290 | |
 | ReportServerTempDB | 208 | SSRS temp – lze vynechat, recreatuje se automaticky |
 | DN.ITF | 144 | |
+
 
 > ⚠️ **Poznámka k Express edici:** SQL Server Express má limit **10 GB na databázi**.  
 > Z výše uvedených databází by na Express nevešla žádná z velkých DB (ReportServer 14 GB, DN.LOG 7,8 GB, DN.ITM 7,7 GB, …).  
