@@ -2,6 +2,8 @@
 
 > **Prostředí:** MS SQL Server 2022 Standard Edition (16.0.4245.2) na primárním i sekundárním serveru  
 > **Cíl:** Sekundární databáze readonly s minutovým zpožděním, automatická propagace DDL i DML, bez dopadu na primární server.
+>
+> Popsány jsou dvě varianty nasazení – viz sekce [Volba topologie](#volba-topologie) níže.
 
 ---
 
@@ -31,12 +33,106 @@ Celkem **13 databází**, celková velikost **~35 GB** – viz tabulka:
 
 ---
 
-## Postup nastavení Log Shipping (Standard → Standard)
+## Volba topologie
+
+Log Shipping lze provozovat ve dvou variantách. Hlavní rozdíl je výkonový, nikoliv funkční.
+
+### Varianta A – Stejné železo, stejná instance
+
+Primární i sekundární databáze jsou na **jednom fyzickém serveru ve stejné SQL Server instanci**.  
+Sekundární DB se jmenuje jinak, např. `DN.LOG_report`.
+
+```
+[Jeden fyzický server]
+┌──────────────────────────────────────────────────────┐
+│  SQL Server instance                                  │
+│  ├─ DN.LOG          (read-write, primární)            │
+│  ├─ DN.LOG_report   (STANDBY, read-only, reporting)   │
+│  ├─ DN.ITM          (read-write, primární)            │
+│  ├─ DN.ITM_report   (STANDBY, read-only, reporting)   │
+│  └─ … (lokální složka pro log backupy)                │
+└──────────────────────────────────────────────────────┘
+```
+
+**Výhody:**
+- Žádné náklady na druhý server ani licenci
+- Jednodušší síťová konfigurace (zálohy jsou lokální cesty, ne UNC)
+- Rychlý copy krok (kopírování na disk je lokální)
+
+**Nevýhody:**
+- ❌ Reporting dotazy **stále spotřebovávají zdroje stejného serveru** (CPU, RAM, I/O)
+- ❌ Výpadek serveru = výpadek obou databází (není DR)
+- ❌ Místo na disku musí pojmout primární + sekundární kopie všech DB (~70 GB navíc)
+
+**Kdy zvolit:** Pokud je prioritou nulový náklad navíc a reporting není výkonově náročný.
+
+---
+
+### Varianta B – Oddělené železo (doporučeno)
+
+Primární a sekundární databáze jsou na **dvou fyzických serverech** (nebo dvou VM).
+
+```
+[Primární server]                    [Sekundární server]
+┌──────────────────┐                ┌──────────────────────┐
+│  DN.LOG          │  log backup    │  DN.LOG (STANDBY)    │
+│  DN.ITM    ──────┼──────────────► │  DN.ITM (STANDBY)    │
+│  DN.GDA          │  \\share\      │  DN.GDA (STANDBY)    │
+│  …               │                │  …                   │
+└──────────────────┘                └──────────────────────┘
+  zápis + transakce                   pouze reporting dotazy
+```
+
+**Výhody:**
+- ✅ Reporting dotazy nezatěžují primární server
+- ✅ Sekundární server přežije výpadek primárního (data jsou k dispozici do doby výpadku)
+- ✅ Sekundární server může mít menší hardware (méně CPU/RAM – jen pro čtení)
+
+**Nevýhody:**
+- Vyžaduje Standard licenci pro sekundární server (nebo CAL)
+- Síťová sdílená složka pro přenos log souborů
+
+**Kdy zvolit:** Pokud je cílem skutečný výkonový offload reportingu od primárního serveru.
+
+---
+
+### Srovnání variant
+
+| Vlastnost | Varianta A – stejná instance | Varianta B – jiný server |
+|---|---|---|
+| Náklady na hardware | ✅ Nulové | ⚠️ Druhý server |
+| Náklady na licenci | ✅ Nulové | ⚠️ Standard licence |
+| Výkonový offload reportingu | ❌ Žádný | ✅ Ano |
+| Odolnost při výpadku serveru | ❌ Obě DB padnou | ✅ Sekundární přežije |
+| Složitost nastavení | ✅ Nižší (lokální cesty) | ⚠️ Síťová složka |
+| Místo na disku | ⚠️ 2× velikost DB | ✅ Rozděleno mezi servery |
+
+---
+
+## Postup nastavení Log Shipping
+
+Postup je shodný pro obě varianty. Rozdíly jsou poznamenány u konkrétních kroků.
 
 Log Shipping přehrává transakční log byte-per-byte, čímž zajišťuje automatickou propagaci veškerých změn včetně DDL (ALTER TABLE, CREATE TABLE, DROP TABLE, …). Primární server není při záloze logu nijak omezen.
 
 ### Schéma fungování
 
+**Varianta A (stejná instance):**
+```
+[SQL Server instance – jeden server]
+        │
+        │  každé 1–2 min: T-Log backup → lokální složka D:\LogShip\
+        ▼
+[D:\LogShip\]  (lokální, žádná síť)
+        │
+        │  každé 1–2 min: restore (copy krok je přeskočen / okamžitý)
+        ▼
+[DN.LOG_report – STANDBY mode, stejná instance]
+        ├─ mezi restore: ✅ READ-ONLY dotazy (reporting)
+        └─ během restore: ⚠️ DB krátce nedostupná (sekundy)
+```
+
+**Varianta B (oddělené servery):**
 ```
 [Primary Server – Standard]
         │
@@ -47,7 +143,6 @@ Log Shipping přehrává transakční log byte-per-byte, čímž zajišťuje aut
         │  každé 1–2 min: kopírování + restore
         ▼
 [Secondary Server – Standard – STANDBY mode]
-        │
         ├─ mezi restore operacemi: ✅ READ-ONLY dotazy (reporting)
         └─ během restore operace: ⚠️ DB krátce nedostupná (sekundy)
 ```
@@ -65,12 +160,13 @@ Log Shipping přehrává transakční log byte-per-byte, čímž zajišťuje aut
    -- … opakuj pro všechny DB
    ```
 
-2. Vytvoř **sdílenou zálohovací složku** přístupnou z obou serverů:
-   - Doporučená cesta: `\\PrimaryServer\LogShip\`
-   - SQL Server service account primárního serveru potřebuje **write** přístup
-   - SQL Server service account sekundárního serveru potřebuje **read** přístup
+2. Vytvoř **zálohovací složku**:
+   - **Varianta A (stejná instance):** Lokální složka, např. `D:\LogShip\` – žádný síťový přístup není potřeba
+   - **Varianta B (jiný server):** Sdílená UNC složka `\\PrimaryServer\LogShip\`; SQL Server service account primárního serveru potřebuje **write**, sekundárního **read** přístup
 
-3. Ověř, že **SQL Server Agent je spuštěn** na obou serverech (nutné pro scheduling jobů).
+3. Ověř, že **SQL Server Agent je spuštěn**:
+   - **Varianta A:** Pouze na jednom serveru (agent běží pro oba joby)
+   - **Varianta B:** Na primárním i sekundárním serveru
 
 ---
 
@@ -81,13 +177,26 @@ Pro každou databázi:
 1. Proveď **Full Backup** na primárním serveru:
    ```sql
    BACKUP DATABASE [DN.LOG]
-   TO DISK = '\\PrimaryServer\LogShip\DN.LOG_init.bak'
+   TO DISK = '\\PrimaryServer\LogShip\DN.LOG_init.bak'   -- Varianta B (UNC)
+   -- TO DISK = 'D:\LogShip\DN.LOG_init.bak'             -- Varianta A (lokální)
    WITH COMPRESSION, STATS = 10;
    ```
 
-2. Přesuň zálohu na sekundární server (nebo přistupuj přes UNC cestu).
+2. **Varianta B:** Přesuň zálohu na sekundární server (nebo přistupuj přes UNC cestu).  
+   **Varianta A:** Záloha je již lokálně dostupná, žádný přesun není potřeba.
 
-3. Obnov databázi na sekundárním serveru v **STANDBY** režimu:
+3. Obnov databázi v **STANDBY** režimu:
+   - **Varianta A:** Cílová DB musí mít jiný název (suffix `_report`):
+   ```sql
+   RESTORE DATABASE [DN.LOG_report]
+   FROM DISK = 'D:\LogShip\DN.LOG_init.bak'
+   WITH
+       STANDBY = 'D:\Standby\DN.LOG_report_undo.bak',
+       MOVE 'DN.LOG'     TO 'D:\Data\DN.LOG_report.mdf',
+       MOVE 'DN.LOG_log' TO 'D:\Log\DN.LOG_report_log.ldf',
+       STATS = 10;
+   ```
+   - **Varianta B:** Cílová DB může mít stejný název (je na jiném serveru):
    ```sql
    RESTORE DATABASE [DN.LOG]
    FROM DISK = 'D:\Restore\DN.LOG_init.bak'
@@ -116,11 +225,12 @@ Pro každou databázi zvlášť (nebo skriptem – viz Krok 4):
    - Schedule: každé **1 minutu** (nebo 2 minuty)
    - Retention: `1440` minut (24 h)
 4. Klikni **Add…** pro přidání sekundárního serveru:
-   - Secondary server instance: `SecondaryServer\Instance`
-   - Secondary database: stejný název jako primární (např. `DN.LOG`)
+   - **Varianta A:** Secondary server instance = **stejná instance** jako primární
+   - **Varianta B:** Secondary server instance = `SecondaryServer\Instance`
+   - Secondary database: **Varianta A:** `DN.LOG_report` | **Varianta B:** `DN.LOG`
    - Initialize: **„No, the secondary database is initialized"** ← protože jsme restore provedli ručně v Kroku 2
    - **Restore Mode: STANDBY** ← klíčové nastavení
-   - Standby file: `D:\Standby\DN.LOG_undo.bak` ← stejná cesta jako při ručním restore
+   - Standby file: odpovídající cesta k undo souboru (viz Krok 2)
    - Copy schedule: každé **1 minutu**
    - Restore schedule: každé **1 minutu**
    - Disconnect users: **Yes** (přeruší aktivní reporting dotazy na dobu restore)
@@ -183,8 +293,10 @@ FROM msdb.dbo.log_shipping_monitor_secondary;
 | Krátká nedostupnost sekundární DB při restore (~1–5 s) | Reporting aplikace by měla mít retry logiku nebo tolerovat krátký výpadek |
 | Latence dat 1–5 minut | Přijatelné pro reporting |
 | Log Shipping není HA (ruční failover) | Sekundární DB slouží pouze pro reporting, ne jako záloha pro failover |
-| Undo soubor pro každou DB (~velikost uncommitted transakcí) | Monitorovat místo na disku sekundárního serveru |
-| Při výpadku síťové sdílené složky přestane kopírování | Monitoring SQL Agent jobů je nutný |
+| Undo soubor pro každou DB (~velikost uncommitted transakcí) | Monitorovat místo na disku (u Varianty A na stejném serveru) |
+| Při výpadku síťové sdílené složky přestane kopírování | Pouze Varianta B – monitoring SQL Agent jobů je nutný |
+| **Varianta A:** Reporting zatěžuje stejný server jako zápisy | Zvážit přechod na Variantu B při výkonových problémech |
+| **Varianta A:** Výpadek serveru = výpadek obou DB | Varianta A neposkytuje DR ochranu |
 
 ---
 
