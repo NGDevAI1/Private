@@ -1,148 +1,200 @@
-# MS SQL Server – Analýza HA řešení pro read-only repliku
+# MS SQL Server – Log Shipping: read-only replika pro reporting
 
-> **Kontext:** MS SQL Server 2022 Standard Edition (16.0.4245.2)  
-> **Požadavek:** Sekundární databáze online, readonly, automatická propagace změn schématu, bez dopadu na primární DB.
-
----
-
-## Porovnání řešení
-
-| Vlastnost | Always On FCI | Always On AG (Basic) | Log Shipping (STANDBY) |
-|---|---|---|---|
-| **Dostupná ve Standard** | ✅ Ano | ✅ Ano (Basic AG) | ✅ Ano |
-| **Sekundární DB readonly** | ❌ **NE** | ❌ **NE (Basic AG)** | ✅ Ano |
-| **Automatická propagace DDL** | ✅ Ano | ✅ Ano | ✅ Ano |
-| **Latence** | ms (failover) | ms | minuty |
-| **Primární DB neovlivněna** | ✅ Ano | ✅ Ano | ✅ Ano |
-| **Licenční náklady navíc** | ⚠️ Windows Cluster + oba uzly | ⚠️ Oba uzly Standard | ⚠️ Druhý server Standard |
-| **Sdílené úložiště (SAN/NAS)** | ✅ Vyžaduje | ❌ Nevyžaduje | ❌ Nevyžaduje |
-| **Složitost nasazení** | Vysoká | Střední | Nízká |
+> **Prostředí:** MS SQL Server 2022 Standard Edition (16.0.4245.2) na primárním i sekundárním serveru  
+> **Cíl:** Sekundární databáze readonly s minutovým zpožděním, automatická propagace DDL i DML, bez dopadu na primární server.
 
 ---
 
-## Always On Failover Cluster Instance (FCI) – proč NEVYHOVUJE
+## Přehled replikovaných databází
 
-### Co FCI je
+Celkem **13 databází**, celková velikost **~35 GB** – viz tabulka:
 
-Always On FCI je **clustering na úrovni instance SQL Serveru**, nikoliv databáze.  
-Oba uzly clusteru sdílejí **jedno společné úložiště** (SAN, iSCSI, Azure Shared Disk).  
-V daný okamžik je aktivní vždy jen **jeden uzel** – druhý je pasivní.
+| Databáze | Velikost (MB) | Poznámka |
+|---|---|---|
+| ReportServer | 14 608 | SSRS katalog |
+| DN.LOG | 7 784 | |
+| DN.ITM | 7 671 | |
+| DN.GDA | 1 053 | |
+| DN.OPR | 946 | |
+| DN.CFG | 646 | |
+| DN.EVL | 528 | |
+| DN.STK | 364 | |
+| NG.Portal | 362 | |
+| DN.TMP | 298 | Zvážit, zda je reporting na TMP potřeba |
+| DN.TRX | 290 | |
+| ReportServerTempDB | 208 | SSRS temp – lze vynechat, recreatuje se automaticky |
+| DN.ITF | 144 | |
 
-### Klíčový problém: sekundární uzel NENÍ pro čtení
-
-```
-[Node 1 – aktivní]  ←→  [Shared Storage]  ←→  [Node 2 – pasivní]
-     ↑ SQL běží zde                                  ↑ SQL neběží vůbec
-```
-
-- Pasivní uzel FCI **nespouští SQL Server** – čeká pouze na failover
-- **Nelze z něj číst**, nelze na něj posílat reporting dotazy
-- Po failoveru se role obrátí, ale opět pouze jeden uzel je aktivní
-
-### Závěr pro FCI
-
-> ❌ **Always On FCI nevyhovuje požadavku na read-only repliku pro reporting.**  
-> FCI řeší pouze vysokou dostupnost (HA) formou failoveru, nikoliv čitelnou kopii.
-
----
-
-## Always On Availability Groups (AG) – Basic vs Full
-
-### Basic AG (Standard Edition)
-
-SQL Server 2016+ Standard Edition podporuje **Basic Availability Groups** s těmito omezeními:
-
-| Omezení Basic AG | Popis |
-|---|---|
-| Max. 2 repliky | 1 primární + 1 sekundární |
-| Sekundární replica readonly | ❌ **Readable secondary NENÍ podporována** |
-| Max. 1 databáze na AG | Nelze sdružit více DB |
-| Bez distribuovaných AG | Pouze lokální cluster |
-
-> ❌ **Basic AG na Standard Edition neumožňuje čtení ze sekundární repliky.**
-
-### Full AG (Enterprise Edition)
-
-- ✅ Readable secondary je plně podporována
-- ✅ Lze nastavit `READ_ONLY_ROUTING`
-- ✅ Latence v řádu milisekund (synchronní) nebo sekund (asynchronní)
-- ❌ **Vyžaduje Enterprise Edition** – výrazně vyšší licenční náklady
+> ⚠️ **Poznámka k Express edici:** SQL Server Express má limit **10 GB na databázi**.  
+> Z výše uvedených databází by na Express nevešla žádná z velkých DB (ReportServer 14 GB, DN.LOG 7,8 GB, DN.ITM 7,7 GB, …).  
+> **Express edice je pro tento scénář nevhodná** – sekundární server musí být Standard nebo vyšší.
 
 ---
 
-## Doporučené řešení: Log Shipping v STANDBY režimu
+## Postup nastavení Log Shipping (Standard → Standard)
 
-Jediné řešení dostupné na **Standard Edition**, které splňuje všechny požadavky:
-
-### Proč Log Shipping
-
-| Požadavek | Log Shipping STANDBY |
-|---|---|
-| Primární DB neovlivněna | ✅ Záloha logu je offline operace |
-| Sekundární readonly | ✅ STANDBY = DB je čitelná mezi restore |
-| Automatická propagace DDL | ✅ Log obsahuje vše byte-per-byte |
-| Latence v minutách | ✅ Konfigurovatelné (1–5 min) |
-| Standard Edition | ✅ Plně podporováno |
+Log Shipping přehrává transakční log byte-per-byte, čímž zajišťuje automatickou propagaci veškerých změn včetně DDL (ALTER TABLE, CREATE TABLE, DROP TABLE, …). Primární server není při záloze logu nijak omezen.
 
 ### Schéma fungování
 
 ```
-[Primary DB – FULL Recovery]
+[Primary Server – Standard]
         │
-        │  každé 1–2 min: T-Log backup
+        │  každé 1–2 min: T-Log backup → sdílená složka
         ▼
-[Sdílená složka \\server\logship\]
+[\\PrimaryServer\LogShip\]
         │
         │  každé 1–2 min: kopírování + restore
         ▼
-[Secondary DB – STANDBY mode]
+[Secondary Server – Standard – STANDBY mode]
         │
-        ├─ mezi restore: ✅ READ-ONLY dotazy
-        └─ během restore: ⚠️ krátce nedostupná (sekundy)
+        ├─ mezi restore operacemi: ✅ READ-ONLY dotazy (reporting)
+        └─ během restore operace: ⚠️ DB krátce nedostupná (sekundy)
 ```
-
-### Postup nastavení (shrnutí)
-
-1. Nastav Recovery Model primární DB na `FULL`
-2. Vytvoř sdílenou zálohovací složku přístupnou oběma serverům
-3. Proveď Full Backup a obnov sekundární DB s `STANDBY = 'cesta\undo.bak'`
-4. V SSMS → Properties primární DB → **Transaction Log Shipping**
-   - Zapni primární roli
-   - Nastav backup job (interval 1–2 min)
-   - Přidej secondary server, zvol **Restore Mode: STANDBY**
-   - Nastav copy + restore job (interval 1–2 min)
-5. Ověř pomocí `msdb.dbo.log_shipping_monitor_secondary`
-
-### Omezení Log Shipping
-
-| Omezení | Dopad |
-|---|---|
-| Krátká nedostupnost při restore (sekundy) | Reporting aplikace potřebuje retry logiku |
-| Latence min. 1–5 minut | Přijatelné pro reporting |
-| Ruční failover (není automatický) | Log Shipping není HA – pouze DR/reporting |
-| Undo soubor musí mít místo | Monitorovat velikost souboru |
 
 ---
 
-## Souhrn doporučení
+### Krok 1 – Příprava primárního serveru
 
-```
-Standard Edition + požadavek na readonly repliku pro reporting
-                         │
-                         ▼
-              ✅ Log Shipping (STANDBY mode)
-                         │
-              Pokud potřebuješ automatický failover:
-                         │
-                         ▼
-              ❌ Basic AG (readonly secondary není k dispozici)
-                         │
-              Pokud potřebuješ readonly secondary + HA:
-                         │
-                         ▼
-              → Upgrade na Enterprise Edition (Always On AG full)
-                nebo Azure SQL (Hyperscale / Business Critical)
+1. Ověř Recovery Model pro každou replikovanou databázi – musí být `FULL`:
+   ```sql
+   -- Spusť pro každou DB zvlášť (nebo hromadně):
+   ALTER DATABASE [DN.LOG]  SET RECOVERY FULL;
+   ALTER DATABASE [DN.ITM]  SET RECOVERY FULL;
+   ALTER DATABASE [DN.GDA]  SET RECOVERY FULL;
+   -- … opakuj pro všechny DB
+   ```
+
+2. Vytvoř **sdílenou zálohovací složku** přístupnou z obou serverů:
+   - Doporučená cesta: `\\PrimaryServer\LogShip\`
+   - SQL Server service account primárního serveru potřebuje **write** přístup
+   - SQL Server service account sekundárního serveru potřebuje **read** přístup
+
+3. Ověř, že **SQL Server Agent je spuštěn** na obou serverech (nutné pro scheduling jobů).
+
+---
+
+### Krok 2 – Inicializace sekundárních databází
+
+Pro každou databázi:
+
+1. Proveď **Full Backup** na primárním serveru:
+   ```sql
+   BACKUP DATABASE [DN.LOG]
+   TO DISK = '\\PrimaryServer\LogShip\DN.LOG_init.bak'
+   WITH COMPRESSION, STATS = 10;
+   ```
+
+2. Přesuň zálohu na sekundární server (nebo přistupuj přes UNC cestu).
+
+3. Obnov databázi na sekundárním serveru v **STANDBY** režimu:
+   ```sql
+   RESTORE DATABASE [DN.LOG]
+   FROM DISK = 'D:\Restore\DN.LOG_init.bak'
+   WITH
+       STANDBY = 'D:\Standby\DN.LOG_undo.bak',
+       MOVE 'DN.LOG'     TO 'D:\Data\DN.LOG.mdf',
+       MOVE 'DN.LOG_log' TO 'D:\Log\DN.LOG_log.ldf',
+       STATS = 10;
+   ```
+   > `STANDBY =` cesta k undo souboru – musí existovat adresář, soubor SQL Server vytvoří sám.  
+   > Tento soubor **nesmaz** – používá se při každém restore k tomu, aby DB zůstala čitelná.
+
+4. Opakuj pro každou databázi.
+
+---
+
+### Krok 3 – Konfigurace Log Shipping přes SSMS
+
+Pro každou databázi zvlášť (nebo skriptem – viz Krok 4):
+
+1. V SSMS klikni pravým na primární DB → **Properties → Transaction Log Shipping**
+2. Zaškrtni **„Enable this as a primary database in a log shipping configuration"**
+3. Záložka **Backup Settings:**
+   - Backup folder: `\\PrimaryServer\LogShip\`
+   - Backup file name prefix: název DB (např. `DN_LOG_`)
+   - Schedule: každé **1 minutu** (nebo 2 minuty)
+   - Retention: `1440` minut (24 h)
+4. Klikni **Add…** pro přidání sekundárního serveru:
+   - Secondary server instance: `SecondaryServer\Instance`
+   - Secondary database: stejný název jako primární (např. `DN.LOG`)
+   - Initialize: **„No, the secondary database is initialized"** ← protože jsme restore provedli ručně v Kroku 2
+   - **Restore Mode: STANDBY** ← klíčové nastavení
+   - Standby file: `D:\Standby\DN.LOG_undo.bak` ← stejná cesta jako při ručním restore
+   - Copy schedule: každé **1 minutu**
+   - Restore schedule: každé **1 minutu**
+   - Disconnect users: **Yes** (přeruší aktivní reporting dotazy na dobu restore)
+5. Klikni **OK** → SSMS vytvoří SQL Agent joby na obou serverech automaticky
+
+---
+
+### Krok 4 – Skript pro hromadné nastavení (volitelné)
+
+Pro automatizaci lze použít systémovou uloženou proceduru místo GUI:
+
+```sql
+-- Příklad pro jednu DB – opakuj pro každou databázi
+EXEC msdb.dbo.sp_add_log_shipping_primary_database
+    @database = N'DN.LOG',
+    @backup_directory = N'\\PrimaryServer\LogShip\',
+    @backup_share = N'\\PrimaryServer\LogShip\',
+    @backup_job_name = N'LSBackup_DN.LOG',
+    @backup_retention_period = 1440,
+    @backup_threshold = 60,
+    @threshold_alert_enabled = 1,
+    @history_retention_period = 1440;
+
+EXEC msdb.dbo.sp_add_log_shipping_secondary_database
+    @secondary_database = N'DN.LOG',
+    @primary_server = N'PrimaryServer',
+    @primary_database = N'DN.LOG',
+    @restore_delay = 0,
+    @restore_mode = 1,           -- 1 = STANDBY (0 = NORECOVERY)
+    @disconnect_users = 1,
+    @restore_threshold = 45,
+    @threshold_alert_enabled = 1,
+    @history_retention_period = 1440,
+    @standby_file_name = N'D:\Standby\DN.LOG_undo.bak';
 ```
 
-> **Doporučení:** Pro SQL Server 2022 Standard s požadavkem na čitelnou kopii pro reporting  
-> je **Log Shipping v STANDBY režimu** jedinou nativní a ekonomicky dostupnou volbou.
+---
+
+### Krok 5 – Ověření a monitoring
+
+```sql
+-- Stav na primárním serveru (čas poslední zálohy):
+SELECT primary_database, last_backup_date, last_backup_file
+FROM msdb.dbo.log_shipping_monitor_primary;
+
+-- Stav na sekundárním serveru (čas posledního restore):
+SELECT secondary_database, last_copied_date, last_restored_date, last_restored_latency
+FROM msdb.dbo.log_shipping_monitor_secondary;
+```
+
+- `last_restored_latency` = aktuální zpoždění v minutách
+- Nastavit **alert** v SQL Agent jobu, pokud latence překročí např. 15 minut
+
+---
+
+### Provozní omezení
+
+| Omezení | Dopad |
+|---|---|
+| Krátká nedostupnost sekundární DB při restore (~1–5 s) | Reporting aplikace by měla mít retry logiku nebo tolerovat krátký výpadek |
+| Latence dat 1–5 minut | Přijatelné pro reporting |
+| Log Shipping není HA (ruční failover) | Sekundární DB slouží pouze pro reporting, ne jako záloha pro failover |
+| Undo soubor pro každou DB (~velikost uncommitted transakcí) | Monitorovat místo na disku sekundárního serveru |
+| Při výpadku síťové sdílené složky přestane kopírování | Monitoring SQL Agent jobů je nutný |
+
+---
+
+## Proč jiné metody replikace nejsou vhodné
+
+| Metoda | Důvod nevhodnosti |
+|---|---|
+| **Always On FCI** | Pasivní uzel nespouští SQL Server – nelze z něj číst |
+| **Always On AG Basic (Standard)** | Readable secondary explicitně nepodporována v Basic AG |
+| **Always On AG Full** | Vyžaduje Enterprise Edition – výrazně vyšší náklady na licence |
+| **Transactional Replication** | Nevhodné pro DDL – změny schématu je nutné přidávat do publikace ručně; nelze replikovat databáze SSRS a systémové tabulky snadno |
+| **Snapshot Replication** | Latence v řádu hodin; při obnově snapshotu krátká nedostupnost |
+| **Express Edition subscriber** | Limit 10 GB/DB – žádná z replikovaných DB se nevejde |
