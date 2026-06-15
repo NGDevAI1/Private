@@ -180,6 +180,8 @@ Komplikace:
 
 ### 4. GitHub Copilot a AI workflow
 
+Aktuální upřesnění: počítáme s 10 vývojáři, všichni GitHub Copilot používají a někteří mají individuální Copilot Pro. To znamená, že Copilot už není jen potenciální nová funkcionalita po migraci, ale existující firemní náklad a nástroj, který je vhodné převést z individuálního režimu do centrální správy.
+
 Přechod na GitHub může otevřít cestu k širšímu využití GitHub Copilot Business nebo Enterprise.
 
 Přínosy:
@@ -196,6 +198,20 @@ Komplikace:
 - nutné nastavit zásady používání AI,
 - právní a bezpečnostní posouzení,
 - měření reálného dopadu na produktivitu.
+
+
+#### Dopad pro 10 vývojářů
+
+Pokud dnes vývojáři používají individuální Copilot účty, firma pravděpodobně nemá jednotnou kontrolu nad licencemi, offboardingem, policy nastavením a billingem. Přechod na Copilot Business obvykle nebude levnější než individuální Copilot Pro, ale řeší firemní správu.
+
+| Copilot scénář pro 10 vývojářů | Orientační měsíční náklad | Dopad |
+|---|---:|---|
+| Individuální Copilot Pro pro všechny | cca 100 USD | Nejnižší cena, ale bez centrální firemní správy. |
+| Mix individuálních Copilot účtů, někteří Pro | cca 0–390 USD podle mixu | Nejednotný billing, různé limity a horší kontrola. |
+| Copilot Business pro všech 10 vývojářů | cca 190 USD | Doporučená firemní varianta: centrální seats, policy a správa. |
+| Copilot Enterprise pro všech 10 vývojářů | cca 390 USD | Vhodné hlavně při Enterprise adopci a vyšších compliance / AI požadavcích. |
+
+Doporučení: protože Copilot už používají všichni vývojáři, nedává smysl dělat pouze adopční pilot. Lepší je udělat krátký administrativní pilot převodu 1–2 uživatelů na Copilot Business, ověřit billing, policy, IDE přístup a následně převést všech 10 vývojářů. Individuální Pro předplatná je vhodné zrušit nebo nechat doběhnout podle billing cyklu, aby nevznikalo dvojí placení.
 
 ### 5. Silnější ekosystém integrací
 
@@ -327,8 +343,8 @@ Ceny níže jsou orientační veřejné list ceny v USD bez DPH, bez individuál
 | GitHub Team | uživatel / měsíc | cca 4 USD | Menší organizace bez enterprise požadavků | Levnější varianta, ale méně enterprise funkcí. |
 | GitHub Enterprise Cloud | uživatel / měsíc | cca 21 USD | Organizace vyžadující SSO, audit, enterprise policy | Pravděpodobná cílová varianta pro firmu. |
 | GitHub Advanced Security | aktivní committer / měsíc | cca 49 USD | Pokud chcete CodeQL, secret scanning, dependency review ve větším rozsahu | Významná nákladová položka; licencovat cíleně. |
-| GitHub Copilot Business | uživatel / měsíc | cca 19 USD | AI asistence pro vývojáře | Vhodné pilotovat na části týmu. |
-| GitHub Copilot Enterprise | uživatel / měsíc | cca 39 USD | Pokročilejší enterprise AI scénáře | Vyšší cena, nutné posoudit přínos. |
+| GitHub Copilot Business | uživatel / měsíc | cca 19 USD | AI asistence pro vývojáře | Pro 10 vývojářů cca 190 USD/měsíc; doporučené pro centrální firemní správu. |
+| GitHub Copilot Enterprise | uživatel / měsíc | cca 39 USD | Pokročilejší enterprise AI scénáře | Pro 10 vývojářů cca 390 USD/měsíc; vhodné až při jasné potřebě enterprise AI funkcí. |
 | GitHub Actions | minuta / storage | podle OS a spotřeby | CI/CD po překročení zahrnutých limitů | Linux bývá nejlevnější, macOS výrazně dražší. |
 | GitHub Codespaces | hodiny + storage | podle velikosti stroje | Cloud dev prostředí | Volitelné, vhodné pro onboarding nebo specifické týmy. |
 | GitHub Packages / artefakty | storage + přenosy | podle spotřeby | Registry, artefakty, kontejnery | Zvážit proti stávajícím registrům. |
@@ -350,7 +366,7 @@ Ceny níže jsou orientační veřejné list ceny v USD bez DPH, bez individuál
 | Minimální GitHub | GitHub Team, Jira zůstává, bez Copilotu a GHAS | Nízký | Malé týmy, nízké compliance požadavky. |
 | Enterprise hybrid | GitHub Enterprise Cloud + Jira + vybrané Actions | Střední | Firmy, které chtějí GitHub pro vývoj a Jira pro řízení práce. |
 | Security-first | Enterprise Cloud + GHAS pro aktivní commitery + Jira | Vyšší | Regulované prostředí, bezpečnostní důraz. |
-| AI-first | Enterprise Cloud + Copilot Business/Enterprise + Jira | Vyšší | Týmy hledající produktivitu přes AI. |
+| AI-first | GitHub Team nebo Enterprise Cloud + Copilot Business + Jira | Vyšší než individuální Pro, ale řízené | Vhodné pro aktuální stav, kdy Copilot používá všech 10 vývojářů. |
 | Full GitHub | Enterprise Cloud + GitHub Issues/Projects + Actions + volitelně GHAS/Copilot | Proměnlivý | Firmy ochotné opustit Jira workflow a timesheeting nahradit jinak. |
 
 ## Co je potřeba spočítat před finálním rozhodnutím
@@ -375,7 +391,7 @@ Pro popsanou situaci je nejvhodnější cílový stav:
 - GitHub for Jira integrace jako povinná součást workflow.
 - GitHub Actions postupně zavádět místo Bitbucket Pipelines.
 - GitHub Advanced Security zavést nejprve pilotně pro kritické repozitáře.
-- Copilot zavést pilotně pro dobrovolníky nebo vybrané týmy a měřit dopad.
+- Copilot převést z individuálních účtů do Copilot Business pro všech 10 vývojářů; pilotovat už jen administrativní převod, policy a billing.
 - Confluence ponechat, pokud je využívaná jako znalostní báze.
 
 ## Rozhodovací kritéria
