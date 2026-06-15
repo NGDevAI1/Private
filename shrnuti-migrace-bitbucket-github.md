@@ -57,6 +57,7 @@
 
 - Jira nemusí být nahrazena hned.
 - GitHub má issues a projects, ale nemusí pokrýt všechny firemní procesy.
+- Oficiální integrace GitHub - Jira je zcela zdarma.
 - Timesheet je potřeba posoudit samostatně.
 - Atlassian Access / SSO / správa uživatelů může zůstat relevantní, pokud Jira zůstane.
 

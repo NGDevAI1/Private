@@ -10,7 +10,7 @@ Migrace ale nemusí znamenat úplné opuštění Atlassianu. U firem, které maj
 
 - migrovat zdrojové kódy, pull requesty a CI/CD do GitHubu,
 - ponechat Jira jako hlavní systém pro projektové řízení, timesheety a reporting,
-- propojit GitHub s Jira pomocí oficiální integrace,
+- propojit GitHub s Jira pomocí oficiální integrace (která je zcela zdarma),
 - až po stabilizaci zvážit, zda GitHub Issues / Projects dokážou nahradit část Jira agendy.
 
 Doporučení: nezačínat „big bang“ migrací celé organizace. Nejprve udělat pilot na 1–3 reprezentativních repozitářích, ověřit migraci historie, pull requestů, pipeline, oprávnění, Jira vazeb a nákladů. Teprve potom připravit vlnovou migraci týmů.
@@ -34,7 +34,7 @@ Předpokládaný současný stav:
 | Pull requesty z Bitbucketu | Částečně / ano podle typu Bitbucketu | GitHub Enterprise Importer | Je nutné ověřit komentáře, review metadata, odkazy a stav PR. |
 | Issues v Bitbucketu | Částečně | Export + import přes API / skripty | Pokud je hlavní evidence v Jira, obvykle se nemigrují do GitHub Issues. |
 | Jira issues | Ano, ale ne 1:1 | Ponechat Jira a integrovat s GitHubem; případně export/import do GitHub Issues | Jira má bohatší workflow, pole, sprinty, timesheety a reporting. |
-| Jira vazby na commity / PR | Částečně | GitHub for Jira integrace + zachování ticket klíčů v branchích/commitech/PR | Historické vazby je nutné otestovat; často vyžadují skripty nebo zůstanou jako odkazy. |
+| Jira vazby na commity / PR | Částečně | GitHub for Jira integrace (zdarma) + zachování ticket klíčů v branchích/commitech/PR | Historické vazby je nutné otestovat; často vyžadují skripty nebo zůstanou jako odkazy. |
 | Timesheet / worklog | Obvykle ne přímo | Ponechat v Jira / Tempo / Marketplace aplikaci | GitHub nemá plnohodnotnou nativní náhradu timesheetingu. |
 | Bitbucket Pipelines | Ne přímo | Přepsat na GitHub Actions | Syntaxe a model jsou odlišné, ale většina workflow je převoditelná. |
 | Deploymenty | Ano, ale vyžaduje úpravy | GitHub Actions environments, secrets, OIDC, branch protection | Nutná revize secretů, schvalování a auditů. |
@@ -299,6 +299,8 @@ Jira lze po migraci ponechat a propojit s GitHubem. To je nejbezpečnější var
 - release planning,
 - worklogy,
 - integrace na finance, support nebo zákaznické procesy.
+
+Oficiální integrace GitHub ↔ Jira (vyvíjená přímo společností Atlassian) je k dispozici zcela zdarma.
 
 GitHub Issues a Projects jsou vhodné pro jednodušší technické backlogy, open-source styl práce a lightweight plánování. Pro komplexní enterprise projektové řízení Jira obvykle zůstává silnější.
 
