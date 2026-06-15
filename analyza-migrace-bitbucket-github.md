@@ -45,6 +45,18 @@ Předpokládaný současný stav:
 | Packages / artefakty | Ano | GitHub Packages, container registry, externí registry | Je potřeba zvážit limity, billing a retention. |
 | Bezpečnostní skeny | Ano | GitHub Advanced Security, Dependabot, secret scanning, CodeQL | Pokročilé funkce mohou být za příplatek podle licence. |
 
+
+## Je GitHub Enterprise Importer zpoplatněn?
+
+GitHub Enterprise Importer není samostatně zpoplatněný migrační produkt s vlastní cenou za repozitář nebo za migraci. Prakticky je dostupný jako součást GitHub Enterprise prostředí a tooling okolo migrace do GitHub Enterprise Cloud. Náklad tedy typicky nevzniká za samotné použití Importeru, ale za:
+
+- cílové GitHub licence, například GitHub Enterprise Cloud,
+- případné doplňky jako GitHub Advanced Security, Copilot, Codespaces nebo GitHub Actions nad rámec zahrnutých limitů,
+- interní práci při přípravě migrace, přemapování oprávnění, úpravě CI/CD a validaci,
+- případné externí konzultanty nebo GitHub Professional Services u složitější migrace.
+
+Důležité: i když Importer samotný není samostatná licenční položka, nemusí být dostupný nebo vhodný pro každý typ GitHub plánu. Pro menší migraci bez potřeby zachovat pull request metadata lze použít i jednodušší Git mirror migraci. Pro firemní migraci s pull requesty, komentáři a více repozitáři je GitHub Enterprise Importer preferovaná cesta.
+
 ## Migrační varianty
 
 ### Varianta A: GitHub pouze pro kód, Atlassian zůstává pro řízení práce
@@ -327,7 +339,8 @@ Ceny níže jsou orientační veřejné list ceny v USD bez DPH, bez individuál
 | Confluence Standard/Premium | uživatel / měsíc | cca 6–12 USD | Pokud používáte dokumentaci v Atlassianu | Migrace do GitHubu nemusí dávat smysl. |
 | Tempo / timesheet doplněk | uživatel / měsíc | dle vendora | Pokud vykazování zůstane v Jira | Nutné zahrnout, pokud je součást procesu. |
 | Migrační práce interní | člověkodny | dle sazby | Discovery, pilot, pipeline, školení | Největší skrytý náklad. |
-| Externí konzultace | projekt / denní sazba | dle dodavatele | Komplexní enterprise migrace | Doporučeno u většího počtu repo nebo compliance požadavků. |
+| GitHub Enterprise Importer | migrace / repo | 0 USD jako samostatná položka | Pokud máte vhodný GitHub Enterprise cílový plán | Neplatí se typicky za Importer samotný; platí se licence, práce a případné služby. |
+| Externí konzultace | projekt / denní sazba | dle dodavatele | Komplexní enterprise migrace | Volitelné; může být největší jednorázový náklad, pokud chcete řízenou migraci s garancemi. |
 | Školení a adopce | tým / uživatel | dle rozsahu | Změna workflow | Snižuje riziko odporu a výpadků produktivity. |
 
 ### Modelové scénáře nákladů
@@ -389,7 +402,7 @@ Migraci je vhodné odložit nebo omezit, pokud:
 1. Udělat inventuru Atlassian a Bitbucket prostředí.
 2. Vybrat pilotní repozitáře.
 3. Založit testovací GitHub organizaci nebo enterprise sandbox.
-4. Ověřit migraci pomocí GitHub Enterprise Importer nebo mirror migrace.
+4. Ověřit migraci pomocí GitHub Enterprise Importer, pokud chcete přenést i PR metadata; pro čistý kód stačí mirror migrace.
 5. Převést jednu reálnou pipeline na GitHub Actions.
 6. Propojit pilot s Jira.
 7. Spočítat reálné měsíční náklady podle spotřeby.
@@ -399,6 +412,7 @@ Migraci je vhodné odložit nebo omezit, pokud:
 
 - GitHub Pricing: https://github.com/pricing
 - GitHub Enterprise Importer dokumentace: https://docs.github.com/en/migrations/using-github-enterprise-importer
+- Bitbucket migrations with GitHub Enterprise Importer: https://docs.github.com/en/migrations/using-github-enterprise-importer/migrating-from-bitbucket-to-github-enterprise-cloud
 - GitHub Actions billing: https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions
 - GitHub Advanced Security: https://docs.github.com/en/get-started/learning-about-github/about-github-advanced-security
 - GitHub for Jira integrace: https://github.com/integrations/jira
