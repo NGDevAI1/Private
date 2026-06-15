@@ -179,6 +179,25 @@ Komplikace při nahrazení TeamCity:
 - code signing a certifikáty vyžadují bezpečné uložení secretů nebo napojení na externí signing službu,
 - je nutné porovnat cenu GitHub Actions minut proti současným TeamCity agentům.
 
+#### Varianta: self-hosted Windows runner
+
+Pokud build vyžaduje Windows prostředí, lokálně instalované nástroje, přístup do interní sítě, specifické licence nebo legacy .NET Framework závislosti, lze GitHub Actions propojit se self-hosted Windows runnerem. V GitHub repozitáři se runner přidá přes **Settings → Actions → Runners → New self-hosted runner**, kde se zvolí Windows a typicky architektura x64.
+
+GitHub následně zobrazí jednorázové instalační příkazy pro PowerShell. Ty na Windows stroji stáhnou runner ZIP, rozbalí ho a nakonfigurují proti konkrétnímu repozitáři pomocí URL repozitáře a registračního tokenu. Runner je možné spouštět ručně přes `.\run.cmd`, ale pro stabilní provoz je vhodnější instalace jako Windows služba přes `.\svc.cmd install` a spuštění přes `.\svc.cmd start`.
+
+Ve workflow se takový runner použije přes labely:
+
+```yaml
+jobs:
+  build:
+    runs-on: [self-hosted, windows]
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo Hello from Windows runner
+```
+
+Pro lepší řízení je vhodné přidat vlastní labely, například `windows-build`, `dotnet`, `gpu` nebo název konkrétního build prostředí. Self-hosted runner by měl běžet na odděleném stroji nebo VM, měl by mít jen nezbytná oprávnění, pravidelné aktualizace a jasně definovanou provozní odpovědnost. U veřejných repozitářů je nutné postupovat opatrně, protože workflow spouštěná z cizích pull requestů mohou pro self-hosted runner představovat bezpečnostní riziko.
+
 ### 3. Bezpečnost a compliance
 
 GitHub může výrazně zlepšit bezpečnostní workflow, zejména s GitHub Advanced Security.
