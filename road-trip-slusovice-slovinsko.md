@@ -3,6 +3,16 @@
 
 ---
 
+TODO: Prozkoumat: https://www.facebook.com/reel/969524838962928
+https://www.instagram.com/p/DJs1cB-ori4/
+https://www.instagram.com/p/DJn27_lsPAG/?img_index=1
+https://www.instagram.com/p/DJaz2MMAFgO/
+https://www.instagram.com/p/DJa4-9TsU58/
+https://www.instagram.com/p/DJhKJ6kgkBj/
+
+
+
+---
 ## 📋 Shrnutí cesty
 
 | Parametr | Detail |
